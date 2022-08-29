@@ -1,0 +1,38 @@
+runFig = plt.figure()
+pwrPlt = runFig.add_axes([.1,1.0, 1.8, .4])
+pwrPlt.grid(color='gray', linestyle='-', linewidth=.2)
+
+timePlt = runFig.add_axes([.1,.1,1.8,.9])
+timePlt.grid(color='gray', linestyle='-', linewidth=.2)
+
+pwrPlt.plot(drun.TIME_ELAPSED, drun["probe.heater.power"], label="probe.pwr")
+pwrPlt.plot(drun.TIME_ELAPSED, drun["device.heater.power"], label="device.pwr")
+pwrPlt.set_ylabel("PWR [%]")
+pwrPlt.legend(loc='upper left')
+
+timePlt.plot(drun.TIME_ELAPSED, drun.T_Probe, label="probe")
+timePlt.plot(drun.TIME_ELAPSED, drun.T_Sample, label="sample")
+timePlt.plot(drun.TIME_ELAPSED, drun.T03, label="device")
+timePlt.set_xlabel("Czas [h]")
+timePlt.set_ylabel("Temperatury [°C]")
+timePlt.legend(loc='upper left')
+
+spids = timePlt.twinx()
+spids.spines['right'].set_color('red')
+spids.plot(meas.TIME_ELAPSED, meas.dT, 'r|')
+spids.set_ylabel("dT")
+
+mapPrev = plt.figure()
+mapScatterA = mapPrev.add_axes([.1,.1,.8,.8])
+mapScatterA.scatter(meas.X, meas.Y, c=meas.Alpha)
+mapScatterA.axis('equal')
+mapScatterA.set_title('Mapa pogl¹dowa - Alpha')
+mapScatterA.set_xlabel('x [mm]')
+mapScatterA.set_ylabel('y [mm]')
+
+mapScatterR = mapPrev.add_axes([1.1,.1,.8,.8])
+mapScatterR.scatter(meas.X, meas.Y, c=meas.Resistance)
+mapScatterR.axis('equal')
+mapScatterR.set_title('Mapa pogl¹dowa - Rezystancja')
+mapScatterR.set_xlabel('x [mm]')
+mapScatterR.set_ylabel('y [mm]')
